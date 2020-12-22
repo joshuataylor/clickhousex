@@ -36,11 +36,7 @@ defimpl DBConnection.Query, for: Clickhousex.Query do
   @codec Application.get_env(:clickhousex, :codec, Clickhousex.Codec.JSON)
 
   def parse(%{statement: statement} = query, _opts) do
-    param_count =
-      statement
-      |> String.codepoints()
-      |> Enum.count(fn s -> s == "?" end)
-
+    param_count = 0
     query = %{query | type: query_type(statement)}
 
     %{query | param_count: param_count}
