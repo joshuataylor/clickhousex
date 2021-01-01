@@ -120,8 +120,9 @@ defmodule Clickhousex.HTTPClient do
       case Keyword.get(opts, :basic_auth) do
         {username, password} ->
           auth_hash = Base.encode64("#{username}:#{password}")
-          auth_header = {"Authorization", "Basic: #{auth_hash}"}
-          [auth_header | @req_headers]
+          auth_header_username = {"X-ClickHouse-User", username}
+          auth_header_password = {"X-ClickHouse-Key", password}
+          [auth_header_username, auth_header_password | @req_headers]
 
         nil ->
           @req_headers
